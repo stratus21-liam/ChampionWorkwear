@@ -41,18 +41,18 @@
 											<% else %>
 												<div class="swiper-slide">
 													<div class="dz-media DZoomImage">
-														<a class="mfp-link lg-item" href="$themedResourceURL('images/products/product1.png')" data-src="$themedResourceURL('images/products/product1.png')">
+														<a class="mfp-link lg-item" href="$themedResourceURL('images/500x500.jpg')" data-src="$themedResourceURL('images/500x500.jpg')">
 															<i class="feather icon-maximize dz-maximize top-left"></i>
 														</a>
-														<img src="$themedResourceURL('images/products/product1.png')" alt="image">
+														<img src="$themedResourceURL('images/500x500.jpg')" alt="image">
 													</div>
 												</div>
 												<div class="swiper-slide">
 													<div class="dz-media DZoomImage">
-														<a class="mfp-link lg-item" href="$themedResourceURL('images/products/product1.png')" data-src="$themedResourceURL('images/products/product1.png')">
+														<a class="mfp-link lg-item" href="$themedResourceURL('images/500x500.jpg')" data-src="$themedResourceURL('images/500x500.jpg')">
 															<i class="feather icon-maximize dz-maximize top-left"></i>
 														</a>
-														<img src="$themedResourceURL('images/products/product1.png')" alt="image">
+														<img src="$themedResourceURL('images/500x500.jpg')" alt="image">
 													</div>
 												</div>																								
 											<% end_if %>
