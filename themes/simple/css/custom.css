@@ -89,7 +89,7 @@ html::-webkit-scrollbar-thumb {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('/_resources/themes/simple/theme/images/background/bg-shape.jpg');
+    background-image: url('/_resources/themes/simple/images/background/bg-shape.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
