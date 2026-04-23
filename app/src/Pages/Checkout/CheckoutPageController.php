@@ -6,8 +6,10 @@ use App\Email\Mailer;
 use App\Model\Order;
 use App\Model\OrderItem;
 use PageController;
+use ShopModule\Model\MemberAddress;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DB;
 use SilverStripe\Security\Security;
 
@@ -106,6 +108,35 @@ class CheckoutPageController extends PageController
         return (bool) $this->SubmittedOrder();
     }
 
+    public function SavedAddresses()
+    {
+        // Pre Saved Addresses Development: expose the logged-in customer's reusable delivery addresses to checkout.
+        $member = Security::getCurrentUser();
+
+        if (!$member || !$member->ID) {
+            return ArrayList::create();
+        }
+
+        return $member->SavedAddresses()->sort('Title', 'ASC');
+    }
+
+    protected function getSavedAddressDataFromCheckout(HTTPRequest $request, array $orderData): array
+    {
+        // Pre Saved Addresses Development: convert checkout delivery fields into the shared MemberAddress helper format.
+        return [
+            'Title' => trim((string) $request->postVar('SavedDeliveryAddressTitle')),
+            'DeliveryCompany' => $orderData['DeliveryCompany'] ?? '',
+            'DeliveryContactName' => $orderData['DeliveryContactName'] ?? '',
+            'DeliveryPhone' => $orderData['DeliveryPhone'] ?? '',
+            'DeliveryEmail' => $orderData['DeliveryEmail'] ?? '',
+            'DeliveryAddressLine1' => $orderData['DeliveryAddressLine1'] ?? '',
+            'DeliveryAddressLine2' => $orderData['DeliveryAddressLine2'] ?? '',
+            'DeliveryCity' => $orderData['DeliveryCity'] ?? '',
+            'DeliveryCounty' => $orderData['DeliveryCounty'] ?? '',
+            'DeliveryPostcode' => $orderData['DeliveryPostcode'] ?? '',
+        ];
+    }
+
     public function placeOrder(HTTPRequest $request): HTTPResponse
     {
         if (!$request->isPOST()) {
@@ -129,6 +160,8 @@ class CheckoutPageController extends PageController
         $fulfilmentMethod = trim((string) $request->postVar('FulfilmentMethod'));
         $poNumber = trim((string) $request->postVar('PONumber'));
         $orderNotes = trim((string) $request->postVar('OrderNotes'));
+        $savedAddressID = (int) $request->postVar('SavedDeliveryAddressID');
+        $saveDeliveryAddress = (bool) $request->postVar('SaveDeliveryAddress');
 
         $data = [
             'FulfilmentMethod' => $fulfilmentMethod,
@@ -144,6 +177,45 @@ class CheckoutPageController extends PageController
             'DeliveryCounty' => trim((string) $request->postVar('DeliveryCounty')),
             'DeliveryPostcode' => trim((string) $request->postVar('DeliveryPostcode')),
         ];
+
+        // Pre Saved Addresses Development: if a saved address is selected, use it as a trusted fallback for required delivery fields.
+        if ($fulfilmentMethod === 'delivery') {
+            if ($savedAddressID) {
+                $savedAddress = MemberAddress::get()
+                    ->filter([
+                        'ID' => $savedAddressID,
+                        'MemberID' => $member->ID,
+                    ])
+                    ->first();
+
+                if (!$savedAddress) {
+                    $this->setCheckoutMessage('Selected delivery address was not found.');
+                    return $this->redirectBack();
+                }
+
+                foreach ([
+                    'DeliveryCompany',
+                    'DeliveryContactName',
+                    'DeliveryPhone',
+                    'DeliveryEmail',
+                    'DeliveryAddressLine1',
+                    'DeliveryAddressLine2',
+                    'DeliveryCity',
+                    'DeliveryCounty',
+                    'DeliveryPostcode',
+                ] as $field) {
+                    if ($data[$field] === '') {
+                        $data[$field] = (string) $savedAddress->$field;
+                    }
+                }
+            }
+        }
+
+        if ($fulfilmentMethod === 'delivery' && $saveDeliveryAddress && $savedAddressID) {
+            // Pre Saved Addresses Development: only brand-new checkout addresses can be saved.
+            $this->setCheckoutMessage('Please enter a new delivery address before saving it to your account.');
+            return $this->redirectBack();
+        }
 
         if (!in_array($fulfilmentMethod, ['collection', 'delivery'], true)) {
             $this->setCheckoutMessage('Please select collection or delivery.');
@@ -172,6 +244,17 @@ class CheckoutPageController extends PageController
             if (!filter_var($data['DeliveryEmail'], FILTER_VALIDATE_EMAIL)) {
                 $this->setCheckoutMessage('Please enter a valid delivery email address.');
                 return $this->redirectBack();
+            }
+
+            if ($saveDeliveryAddress && !$savedAddressID) {
+                // Pre Saved Addresses Development: validate the new saved address before the order transaction starts.
+                $savedAddressData = $this->getSavedAddressDataFromCheckout($request, $data);
+                $savedAddressMessage = MemberAddress::validateAddressData($savedAddressData);
+
+                if ($savedAddressMessage !== null) {
+                    $this->setCheckoutMessage('Address not saved: ' . $savedAddressMessage);
+                    return $this->redirectBack();
+                }
             }
         }
 
@@ -206,7 +289,10 @@ class CheckoutPageController extends PageController
                 $status,
                 $requiresApproval,
                 $cart,
-                $cartTotal
+                $cartTotal,
+                $saveDeliveryAddress,
+                $savedAddressID,
+                $request
             ) {
                 $order = Order::create();
                 $order->CustomerID = (int) $member->ID;
@@ -240,6 +326,18 @@ class CheckoutPageController extends PageController
                 $order->Subtotal = $order->getItemsSubtotal();
                 $order->Total = $order->Subtotal;
                 $order->write();
+
+                if ($data['FulfilmentMethod'] === 'delivery' && $saveDeliveryAddress && !$savedAddressID) {
+                    // Pre Saved Addresses Development: save new checkout addresses only after the order itself has been created.
+                    [$savedCheckoutAddress, $savedCheckoutAddressMessage] = MemberAddress::createForMemberFromData(
+                        $member,
+                        $this->getSavedAddressDataFromCheckout($request, $data)
+                    );
+
+                    if ($savedCheckoutAddressMessage !== null) {
+                        throw new \RuntimeException($savedCheckoutAddressMessage);
+                    }
+                }
             });
 
             if (!$order || !$order->exists()) {

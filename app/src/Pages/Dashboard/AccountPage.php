@@ -4,6 +4,8 @@ namespace App\Pages;
 use PageController;
 use Page;
 use App\Extension\SinglePageInstance;
+use ShopModule\Model\MemberAddress;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Security;
 use SilverStripe\Security\Member;
 use SilverStripe\Control\HTTPRequest;
@@ -41,6 +43,9 @@ class AccountPageController extends PageController
 
     private static $allowed_actions = [
         'saveAccount',
+        'createAddress',
+        'updateAddress',
+        'deleteAddress',
     ];
 
     public function init()
@@ -77,6 +82,26 @@ class AccountPageController extends PageController
         }
 
         return $message;
+    }
+
+    public function SavedAddresses()
+    {
+        // Pre Saved Addresses Development: expose the logged-in customer's reusable delivery addresses to the account template.
+        $member = Security::getCurrentUser();
+
+        if (!$member || !$member->ID) {
+            return ArrayList::create();
+        }
+
+        return $member->SavedAddresses()->sort('Title', 'ASC');
+    }
+
+    public function EditAddressID(): ?int
+    {
+        // Pre Saved Addresses Development: keep the selected address open after an edit/save redirect.
+        $id = (int) $this->getRequest()->getVar('editAddress');
+
+        return $id > 0 ? $id : null;
     }
 
     public function saveAccount(HTTPRequest $request): HTTPResponse
@@ -161,5 +186,124 @@ class AccountPageController extends PageController
 
         $this->setAccountMessage('Account updated.');
         return $this->redirectBack();
+    }
+
+    public function createAddress(HTTPRequest $request): HTTPResponse
+    {
+        // Pre Saved Addresses Development: create a saved delivery address for the logged-in customer.
+        if (!$request->isPOST()) {
+            return $this->httpError(405);
+        }
+
+        $member = Security::getCurrentUser();
+
+        if (!$member || !$member->ID) {
+            $this->setAccountMessage('Unable to create address.');
+            return $this->redirectBack();
+        }
+
+        [$address, $message] = MemberAddress::createForMemberFromData(
+            $member,
+            $this->getAddressDataFromRequest($request)
+        );
+
+        if ($message !== null) {
+            $this->setAccountMessage('Address not created: ' . $message);
+            return $this->redirectBack();
+        }
+
+        $this->setAccountMessage('Address created.');
+        return $this->redirect($this->Link() . '?editAddress=' . $address->ID);
+    }
+
+    public function updateAddress(HTTPRequest $request): HTTPResponse
+    {
+        // Pre Saved Addresses Development: update a saved delivery address owned by the logged-in customer.
+        if (!$request->isPOST()) {
+            return $this->httpError(405);
+        }
+
+        $member = Security::getCurrentUser();
+        $id = (int) $request->param('ID');
+
+        if (!$member || !$member->ID) {
+            $this->setAccountMessage('Unable to update address.');
+            return $this->redirect($this->Link());
+        }
+
+        $address = MemberAddress::get()
+            ->filter([
+                'ID' => $id,
+                'MemberID' => $member->ID,
+            ])
+            ->first();
+
+        if (!$address) {
+            $this->setAccountMessage('Address not found.');
+            return $this->redirect($this->Link());
+        }
+
+        $message = MemberAddress::writeAddressFromData(
+            $address,
+            $this->getAddressDataFromRequest($request)
+        );
+
+        if ($message !== null) {
+            $this->setAccountMessage($message);
+            return $this->redirect($this->Link() . '?editAddress=' . $id);
+        }
+
+        $this->setAccountMessage('Address updated.');
+        return $this->redirect($this->Link() . '?editAddress=' . $address->ID);
+    }
+
+    public function deleteAddress(HTTPRequest $request): HTTPResponse
+    {
+        // Pre Saved Addresses Development: delete a saved delivery address owned by the logged-in customer.
+        if (!$request->isPOST()) {
+            return $this->httpError(405);
+        }
+
+        $member = Security::getCurrentUser();
+        $id = (int) $request->param('ID');
+
+        if (!$member || !$member->ID) {
+            $this->setAccountMessage('Unable to delete address.');
+            return $this->redirect($this->Link());
+        }
+
+        $address = MemberAddress::get()
+            ->filter([
+                'ID' => $id,
+                'MemberID' => $member->ID,
+            ])
+            ->first();
+
+        if (!$address) {
+            $this->setAccountMessage('Address not found.');
+            return $this->redirect($this->Link());
+        }
+
+        $address->delete();
+
+        $this->setAccountMessage('Address deleted.');
+        return $this->redirect($this->Link());
+    }
+
+    protected function getAddressDataFromRequest(HTTPRequest $request): array
+    {
+        // Pre Saved Addresses Development: collect request values before passing them to the shared MemberAddress helper.
+        return [
+            'Title' => trim((string) $request->postVar('Title')),
+            'DeliveryCompany' => trim((string) $request->postVar('DeliveryCompany')),
+            'DeliveryContactName' => trim((string) $request->postVar('DeliveryContactName')),
+            'DeliveryPhone' => trim((string) $request->postVar('DeliveryPhone')),
+            'DeliveryEmail' => trim((string) $request->postVar('DeliveryEmail')),
+            'DeliveryAddressLine1' => trim((string) $request->postVar('DeliveryAddressLine1')),
+            'DeliveryAddressLine2' => trim((string) $request->postVar('DeliveryAddressLine2')),
+            'DeliveryCity' => trim((string) $request->postVar('DeliveryCity')),
+            'DeliveryCounty' => trim((string) $request->postVar('DeliveryCounty')),
+            'DeliveryPostcode' => trim((string) $request->postVar('DeliveryPostcode')),
+        ];
     }
 }

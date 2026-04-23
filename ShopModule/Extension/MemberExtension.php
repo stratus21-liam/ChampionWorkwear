@@ -4,6 +4,7 @@ namespace ShopModule\Extension;
 
 use App\Model\Order;
 use ShopModule\Model\CustomerAccount;
+use ShopModule\Model\MemberAddress;
 use ShopModule\Model\Role;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Extension;
@@ -34,6 +35,8 @@ class MemberExtension extends DataExtension
 
     private static $has_many = [
         'Orders' => Order::class . '.Customer',
+        // Pre Saved Addresses Development: allow each customer/member to manage multiple reusable checkout addresses.
+        'SavedAddresses' => MemberAddress::class . '.Member',
     ];
 
     private static $summary_fields = [
@@ -108,6 +111,18 @@ class MemberExtension extends DataExtension
             CheckboxField::create('Active', 'Active')
         ]);
        
+    }
+
+    public function SavedAddresses()
+    {
+        // Pre Saved Addresses Development: expose saved addresses even when extension has_many methods are not available from Member->__call().
+        if (!$this->owner->ID) {
+            return MemberAddress::get()->filter('ID', 0);
+        }
+
+        return MemberAddress::get()
+            ->filter('MemberID', $this->owner->ID)
+            ->sort('Title', 'ASC');
     }
 
     /**
