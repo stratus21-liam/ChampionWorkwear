@@ -7,7 +7,7 @@
 				<div class="col-xl-6 col-md-6 col-sm-6">
 					<div class="widget widget_about me-2">
 						<div class="footer-logo logo-white">
-							<a href="index.html"><img src="$themedResourceURL('champion/ChampionWorkWearLogoblack.png')" alt="/"></a> 
+							<a href="index.html"><img src="$themedResourceURL('images/ChampionWorkWearLogoblack.png')" alt="/"></a> 
 						</div>
 						<ul class="widget-address">
 							<li>

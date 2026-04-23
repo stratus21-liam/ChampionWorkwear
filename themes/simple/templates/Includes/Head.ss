@@ -40,5 +40,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-
+    <link rel="icon" type="image/png" href="$themedResourceURL('images/favicon/favicon-96x96.png')" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="$themedResourceURL('/favicon.svg')" />
+    <link rel="shortcut icon" href="$themedResourceURL('/favicon.ico')" />
+    <link rel="apple-touch-icon" sizes="180x180" href="$themedResourceURL('/apple-touch-icon.png')" />
+    <link rel="manifest" href="$themedResourceURL('/site.webmanifest')" />
 </head>

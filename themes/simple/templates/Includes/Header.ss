@@ -6,7 +6,7 @@
 			<div class="container-fluid clearfix">
 				<!-- Website Logo -->
 				<div class="logo-header logo-dark me-md-5">
-					<a href="/"><img src="$themedResourceURL('champion/ChampionWorkwearHorizontal.png')" alt="logo"></a>
+					<a href="/"><img src="$themedResourceURL('images/ChampionWorkwearHorizontal.png')" alt="logo"></a>
 				</div>
 				
 				<!-- Nav Toggle Button -->
