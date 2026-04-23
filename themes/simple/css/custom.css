@@ -159,3 +159,25 @@ html::-webkit-scrollbar-thumb {
 .dz-product-detail .product-num {
     align-items: baseline;
 }
+
+
+/* Banner overlay if needed */
+/* .dz-bnr-inr {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.dz-bnr-inr::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1;
+}
+
+.dz-bnr-inr-entry {
+    position: relative;
+    z-index: 2;
+    color: #fff; 
+} */
