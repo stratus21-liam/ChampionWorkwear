@@ -1,5 +1,5 @@
 <!--banner-->
-<div class="dz-bnr-inr style-1" style="background-image:url( <% if SiteConfig.BannerImage %> $SiteConfig.BannerImage.URL <% else %>$themedResourceURL('theme/images/background/bg-shape.jpg') <% end_if %>);">
+<div class="dz-bnr-inr style-1" style="background-image:url( <% if SiteConfig.BannerImage %> $SiteConfig.BannerImage.URL <% else %>$themedResourceURL('images/background/bg-shape.jpg') <% end_if %>);">
    <div class="container">
       <div class="dz-bnr-inr-entry">
          <% if $CurrentMember.CustomerAccount.StoreTitle %>

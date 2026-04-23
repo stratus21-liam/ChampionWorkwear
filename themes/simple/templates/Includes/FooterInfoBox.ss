@@ -6,7 +6,7 @@
          <div class="col-xl-3 col-lg-3 col-sm-6">
             <div class="icon-bx-wraper style-2 bg-light">
                <div class="icon-bx">
-                  <img src="$themedResourceURL('theme/images/svg/icon-bx/password-check.svg')" alt="/">
+                  <img src="$themedResourceURL('images/svg/icon-bx/password-check.svg')" alt="/">
                </div>
                <div class="icon-content">
                   <h5 class="dz-title">Account-Based Access</h5>
@@ -19,7 +19,7 @@
          <div class="col-xl-3 col-lg-3 col-sm-6">
             <div class="icon-bx-wraper style-2">
                <div class="icon-bx">
-                  <img src="$themedResourceURL('theme/images/svg/icon-bx/cart.svg')" alt="/">
+                  <img src="$themedResourceURL('images/svg/icon-bx/cart.svg')" alt="/">
                </div>
                <div class="icon-content">
                   <h5 class="dz-title">Simple Ordering</h5>
@@ -32,7 +32,7 @@
          <div class="col-xl-3 col-lg-3 col-sm-6">
             <div class="icon-bx-wraper style-2 bg-light">
                <div class="icon-bx">
-                  <img src="$themedResourceURL('theme/images/svg/icon-bx/discovery.svg')" alt="/">
+                  <img src="$themedResourceURL('images/svg/icon-bx/discovery.svg')" alt="/">
                </div>
                <div class="icon-content">
                   <h5 class="dz-title">Approval Control</h5>
@@ -45,7 +45,7 @@
          <div class="col-xl-3 col-lg-3 col-sm-6">
             <div class="icon-bx-wraper style-2">
                <div class="icon-bx">
-                  <img src="$themedResourceURL('theme/images/svg/icon-bx/box-tick.svg')" alt="/">
+                  <img src="$themedResourceURL('images/svg/icon-bx/box-tick.svg')" alt="/">
                </div>
                <div class="icon-content">
                   <h5 class="dz-title">Reliable Fulfilment</h5>

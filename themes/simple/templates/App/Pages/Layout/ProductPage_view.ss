@@ -30,7 +30,7 @@
 	                                        <% loop SortedImages %>
 	                                            <div class="swiper-slide">
 	                                                <div class="dz-media DZoomImage">
-	                                                    <a class="mfp-link lg-item" href="theme/images/products/product-detail2/product1.png" data-src="$URL">
+	                                                    <a class="mfp-link lg-item" href="images/products/product-detail2/product1.png" data-src="$URL">
 	                                                        <i class="feather icon-maximize dz-maximize top-left"></i>
 	                                                    </a>
 	                                                    <img src="$URL" alt="image">
