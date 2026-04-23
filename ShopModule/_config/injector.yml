@@ -1,0 +1,5 @@
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Security\MemberAuthenticator\LoginHandler:
+    class: LoginHandlerInection
+  # SilverStripe\Security\Member:
+  #   class: MemberInjection

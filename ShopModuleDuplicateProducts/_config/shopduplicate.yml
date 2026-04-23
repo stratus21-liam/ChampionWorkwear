@@ -1,0 +1,12 @@
+---
+Name: shopmoduleduplicateproducts
+Before:
+  - '#adminroutes'
+---
+ShopModule\Model\Product:
+  extensions:
+    - ShopModuleDuplicateProducts\Extension\ProductDuplicateExtension
+
+SilverStripe\Control\Director:
+  rules:
+    'admin/product-duplicate//$Action/$ProductID': 'ShopModuleDuplicateProducts\Controller\ProductDuplicateController'

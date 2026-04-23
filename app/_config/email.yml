@@ -1,0 +1,12 @@
+---
+Name: appmailer
+After: "mailer"
+---
+SilverStripe\Core\Injector\Injector:
+  Symfony\Component\Mailer\Transport\TransportInterface:
+    constructor:
+      dsn: "`MAILER_DSN`"
+
+SilverStripe\Control\Email\Email:
+  admin_email:
+    noreply@championworkwear.co.uk : 'Champion Team'  

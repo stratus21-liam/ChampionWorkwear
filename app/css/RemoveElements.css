@@ -1,0 +1,3 @@
+#Menu-SilverStripe-Reports-ReportAdmin, #Menu-SilverStripe-CampaignAdmin-CampaignAdmin, #Menu-SilverStripe-VersionedAdmin-ArchiveAdmin{
+    display: none!important;
+}
