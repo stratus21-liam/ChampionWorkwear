@@ -27,16 +27,36 @@
 								<div class="swiper-btn-center-lr">
 									<div class="swiper product-gallery-swiper2">
 										<div class="swiper-wrapper" id="lightgallery">
-	                                        <% loop SortedImages %>
-	                                            <div class="swiper-slide">
-	                                                <div class="dz-media DZoomImage">
-	                                                    <a class="mfp-link lg-item" href="images/products/product-detail2/product1.png" data-src="$URL">
-	                                                        <i class="feather icon-maximize dz-maximize top-left"></i>
-	                                                    </a>
-	                                                    <img src="$URL" alt="image">
-	                                                </div>
-	                                            </div>
-	                                        <% end_loop %>
+											<% if SortedImages %>
+												<% loop SortedImages %>
+													<div class="swiper-slide">
+														<div class="dz-media DZoomImage">
+															<a class="mfp-link lg-item" href="$URL" data-src="$URL">
+																<i class="feather icon-maximize dz-maximize top-left"></i>
+															</a>
+															<img src="$URL" alt="image">
+														</div>
+													</div>
+												<% end_loop %>											
+											<% else %>
+												<div class="swiper-slide">
+													<div class="dz-media DZoomImage">
+														<a class="mfp-link lg-item" href="$themedResourceURL('images/products/product1.png')" data-src="$themedResourceURL('images/products/product1.png')">
+															<i class="feather icon-maximize dz-maximize top-left"></i>
+														</a>
+														<img src="$themedResourceURL('images/products/product1.png')" alt="image">
+													</div>
+												</div>
+												<div class="swiper-slide">
+													<div class="dz-media DZoomImage">
+														<a class="mfp-link lg-item" href="$themedResourceURL('images/products/product1.png')" data-src="$themedResourceURL('images/products/product1.png')">
+															<i class="feather icon-maximize dz-maximize top-left"></i>
+														</a>
+														<img src="$themedResourceURL('images/products/product1.png')" alt="image">
+													</div>
+												</div>																								
+											<% end_if %>
+
 										</div>
 									</div>
 									<div class="swiper product-gallery-swiper thumb-swiper-lg">
