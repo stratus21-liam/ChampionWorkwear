@@ -31,7 +31,7 @@
             "app/src/PageController.php"
         ],
         "expose": [
-            "themes/simple/theme", 
+            "themes/simple", 
             "app/css", 
             "app/javascript", 
             "app/images", 
