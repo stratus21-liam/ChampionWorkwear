@@ -1,0 +1,8 @@
+---
+Name: testemails
+Before:
+  - '#adminroutes'
+---
+SilverStripe\Control\Director:
+  rules:
+    'dev/test-emails//$Action': 'TestEmails\Controller\TestEmailsController'

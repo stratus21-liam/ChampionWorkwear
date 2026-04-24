@@ -194,6 +194,10 @@ class MemberExtension extends DataExtension
     {
         $owner = $this->owner;
 
+        if ($owner->inGroup('administrators') || Permission::checkMember($owner, 'CMS_ACCESS')) {
+            return $result;
+        }
+
         if (!$owner->CustomerAccountID) {
             $result->addError('Customer Account is required.');
         }
