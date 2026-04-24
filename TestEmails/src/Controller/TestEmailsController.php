@@ -10,6 +10,8 @@ use SilverStripe\Core\Convert;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
 use SilverStripe\Security\SecurityToken;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 class TestEmailsController extends Controller
 {
@@ -83,7 +85,14 @@ class TestEmailsController extends Controller
             ));
         }
 
-        $result = Mailer::sendGenericEmail($to, $subject, nl2br(Convert::raw2xml($body)));
+        try {
+            $result = Mailer::sendGenericEmail($to, $subject, nl2br(Convert::raw2xml($body)));
+        } catch (TransportExceptionInterface | RfcComplianceException $exception) {
+            return $this->redirect($this->buildRedirectUrl(
+                'error',
+                sprintf('Email could not be sent: %s', $exception->getMessage())
+            ));
+        }
 
         return $this->redirect($this->buildRedirectUrl(
             $result ? 'success' : 'error',
