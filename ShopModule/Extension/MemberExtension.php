@@ -194,43 +194,43 @@ class MemberExtension extends DataExtension
     {
         $owner = $this->owner;
 
-        if (!$owner->CustomerAccountID) {
-            $result->addError('Customer Account is required.');
-        }
+        // if (!$owner->CustomerAccountID) {
+        //     $result->addError('Customer Account is required.');
+        // }
 
-        if (!$owner->Email) {
-            $result->addError('Email is required.');
-        }
+        // if (!$owner->Email) {
+        //     $result->addError('Email is required.');
+        // }
 
-        if (!$owner->FirstName) {
-            $result->addError('First name is required.');
-        }
+        // if (!$owner->FirstName) {
+        //     $result->addError('First name is required.');
+        // }
 
-        if (!$owner->Surname) {
-            $result->addError('Surname is required.');
-        }
+        // if (!$owner->Surname) {
+        //     $result->addError('Surname is required.');
+        // }
 
-        if (!$owner->IsAdmin && !$owner->RoleID) {
-            $result->addError('Role is required for sub users.');
-        }
+        // if (!$owner->IsAdmin && !$owner->RoleID) {
+        //     $result->addError('Role is required for sub users.');
+        // }
 
-        if ($owner->RoleID) {
-            $role = Role::get()->byID($owner->RoleID);
+        // if ($owner->RoleID) {
+        //     $role = Role::get()->byID($owner->RoleID);
 
-            if ($role && (int) $role->CustomerAccountID !== (int) $owner->CustomerAccountID) {
-                $result->addError('Selected role does not belong to this customer account.');
-            }
-        }
+        //     if ($role && (int) $role->CustomerAccountID !== (int) $owner->CustomerAccountID) {
+        //         $result->addError('Selected role does not belong to this customer account.');
+        //     }
+        // }
 
-        if ($owner->SpendLimit !== null && $owner->SpendLimit !== '' && $owner->SpendLimit < 0) {
-            $result->addError('Spend limit cannot be less than 0.');
-        }
+        // if ($owner->SpendLimit !== null && $owner->SpendLimit !== '' && $owner->SpendLimit < 0) {
+        //     $result->addError('Spend limit cannot be less than 0.');
+        // }
 
-        if ($owner->EnableSpendLimit) {
-            if ($owner->SpendLimit === null || $owner->SpendLimit === '' || (float) $owner->SpendLimit <= 0) {
-                $result->addError('Spend limit must be greater than 0 when spend limit is enabled.');
-            }
-        }
+        // if ($owner->EnableSpendLimit) {
+        //     if ($owner->SpendLimit === null || $owner->SpendLimit === '' || (float) $owner->SpendLimit <= 0) {
+        //         $result->addError('Spend limit must be greater than 0 when spend limit is enabled.');
+        //     }
+        // }
 
         return $result;
     }

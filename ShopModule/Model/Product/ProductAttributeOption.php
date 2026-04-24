@@ -56,6 +56,7 @@ class ProductAttributeOption extends DataObject
             'HexColour',
             'SquareLabel',
             'AttributeID',
+            'Products',
         ]);
 
         $attributeType = null;
