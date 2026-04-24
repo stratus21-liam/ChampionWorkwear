@@ -86,7 +86,7 @@ class TestEmailsController extends Controller
         }
 
         try {
-            $result = Mailer::sendGenericEmail($to, $subject, nl2br(Convert::raw2xml($body)));
+            Mailer::sendGenericEmail($to, $subject, nl2br(Convert::raw2xml($body)));
         } catch (TransportExceptionInterface | RfcComplianceException $exception) {
             return $this->redirect($this->buildRedirectUrl(
                 'error',
@@ -95,10 +95,8 @@ class TestEmailsController extends Controller
         }
 
         return $this->redirect($this->buildRedirectUrl(
-            $result ? 'success' : 'error',
-            $result
-                ? sprintf('Test email sent to %s.', $to)
-                : 'The email could not be sent.'
+            'success',
+            sprintf('Test email sent to %s.', $to)
         ));
     }
 
