@@ -47,9 +47,9 @@ class TestEmailsController extends Controller
             return $response;
         }
 
-        if (!$request->isPOST()) {
-            return $this->httpError(405, 'Email test requests must use POST.');
-        }
+        // if (!$request->isPOST()) {
+        //     return $this->httpError(405, 'Email test requests must use POST.');
+        // }
 
         if (!SecurityToken::inst()->checkRequest($request)) {
             return $this->redirect($this->buildRedirectUrl(
