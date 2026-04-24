@@ -92,9 +92,17 @@ class PendingOrdersPageController extends PageController
             return $this->httpError(405);
         }
 
+        $poNumber = trim((string) $request->postVar('PONumber'));
+
+        if ($poNumber === '') {
+            $this->setMessage('Please provide a PO number.');
+            return $this->redirectBack();
+        }
+
         $order = $this->data()->approvePendingOrderForMember(
             $this->CurrentMember(),
-            (string) $request->param('OrderNumber')
+            (string) $request->param('OrderNumber'),
+            $poNumber
         );
 
         if (!$order) {

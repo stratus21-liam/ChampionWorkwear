@@ -132,9 +132,22 @@
                     <% end_if %>
 
                     <% if $Order.Status = 'PendingApproval' %>
-                        <div class="d-flex gap-2 flex-wrap m-b30">
+                        <div class="m-b30">
                             <form method="post" action="$Order.PendingOrderLink(approve)">
                                 <input type="hidden" name="SecurityID" value="$SecurityTokenValue.XML">
+
+                                <div class="form-group m-b15">
+                                    <label class="label-title">PO Number *</label>
+                                    <input
+                                        type="text"
+                                        name="PONumber"
+                                        class="form-control"
+                                        value="$Order.PONumber.XML"
+                                        placeholder="Enter the PO number for this order."
+                                        required
+                                    >
+                                </div>
+
                                 <button type="submit" class="btn btn-secondary">APPROVE ORDER</button>
                             </form>
                         </div>

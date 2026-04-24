@@ -133,20 +133,32 @@ class PendingOrdersPage extends Page
             ->first();
     }
 
-    public function approvePendingOrderForMember(?Member $member, string $orderNumber): ?Order
+    public function approvePendingOrderForMember(?Member $member, string $orderNumber, string $poNumber): ?Order
     {
         $order = $this->getPendingOrderForMember($member, $orderNumber);
+        $poNumber = trim($poNumber);
 
-        if (!$order || !$member) {
+        if (!$order || !$member || $poNumber === '') {
             return null;
         }
 
-        DB::get_conn()->withTransaction(function () use ($order, $member) {
+        DB::get_conn()->withTransaction(function () use ($order, $member, $poNumber) {
+            $existingNotes = trim((string) $order->OrderNotes);
+            $auditNote = sprintf(
+                'PO Number was updated on %s by %s',
+                date('d/m/Y H:i:s'),
+                $member->Email ?: 'unknown user'
+            );
+
             $order->Status = Order::STATUS_APPROVED;
             $order->RejectionReason = null;
             $order->RejectedAt = null;
             $order->ApprovedByID = (int) $member->ID;
             $order->ApprovedAt = date('Y-m-d H:i:s');
+            $order->PONumber = $poNumber;
+            $order->OrderNotes = $existingNotes !== ''
+                ? $existingNotes . "\n" . $auditNote
+                : $auditNote;
             $order->write();
         });
 
