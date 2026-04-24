@@ -194,7 +194,7 @@ class MemberExtension extends DataExtension
     {
         $owner = $this->owner;
 
-        if ($owner->inGroup('administrators') || Permission::checkMember($owner, 'CMS_ACCESS')) {
+        if ($this->shouldBypassCustomerValidation()) {
             return $result;
         }
 
@@ -237,5 +237,24 @@ class MemberExtension extends DataExtension
         }
 
         return $result;
+    }
+
+    protected function shouldBypassCustomerValidation(): bool
+    {
+        $owner = $this->owner;
+
+        if ($owner->inGroup('administrators') || Permission::checkMember($owner, 'CMS_ACCESS')) {
+            return true;
+        }
+
+        $adminGroupIDs = Permission::get_groups_by_permission('ADMIN')->column('ID');
+
+        if (!$adminGroupIDs) {
+            return false;
+        }
+
+        return $owner->DirectGroups()
+            ->filter('ID', $adminGroupIDs)
+            ->exists();
     }
 }
