@@ -152,7 +152,7 @@ html::-webkit-scrollbar-thumb {
 .product-num .square-radio label.btn{
     padding: 3px 10px;
 }
-.product-option-group:first-of-type{
+.dz-content .product-num .product-option-group:first-of-type{
     margin-right: 15px;
 }
 .colour-radio label{
