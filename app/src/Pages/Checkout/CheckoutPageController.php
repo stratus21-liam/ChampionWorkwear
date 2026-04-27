@@ -259,11 +259,12 @@ class CheckoutPageController extends PageController
         }
 
         $cartTotal = (float) $this->CartTotal()->getValue();
+        $cartTotalIncludingVAT = Order::amountIncludingVAT($cartTotal);
 
         if ((bool) $member->EnableSpendLimit) {
             $spendLimit = (float) $member->SpendLimit;
 
-            if ($cartTotal > $spendLimit) {
+            if ($cartTotalIncludingVAT > $spendLimit) {
                 $this->setCheckoutMessage(
                     sprintf(
                         'This order exceeds your spend limit of £%0.2f.',
@@ -290,6 +291,7 @@ class CheckoutPageController extends PageController
                 $requiresApproval,
                 $cart,
                 $cartTotal,
+                $cartTotalIncludingVAT,
                 $saveDeliveryAddress,
                 $savedAddressID,
                 $request
@@ -300,7 +302,7 @@ class CheckoutPageController extends PageController
                 $order->Status = $status;
                 $order->RequiresApproval = $requiresApproval;
                 $order->Subtotal = $cartTotal;
-                $order->Total = $cartTotal;
+                $order->Total = $cartTotalIncludingVAT;
 
                 foreach ($data as $field => $value) {
                     $order->$field = $value;
@@ -324,7 +326,7 @@ class CheckoutPageController extends PageController
                 }
 
                 $order->Subtotal = $order->getItemsSubtotal();
-                $order->Total = $order->Subtotal;
+                $order->Total = Order::amountIncludingVAT((float) $order->Subtotal);
                 $order->write();
 
                 if ($data['FulfilmentMethod'] === 'delivery' && $saveDeliveryAddress && !$savedAddressID) {

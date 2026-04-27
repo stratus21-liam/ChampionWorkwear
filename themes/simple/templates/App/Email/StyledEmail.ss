@@ -11,7 +11,7 @@
             <td align="center" style="padding:30px 15px;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:700px; background:#ffffff; border-radius:12px; overflow:hidden;">
                     <tr>
-                        <td style="background:#006892; padding:30px 20px; text-align:center;">
+                        <td style="background:#000; padding:30px 20px; text-align:center;">
                             <% if $SiteLogo %>
                                 <p style="margin:0 0 15px;">
                                     <img src="$SiteLogo" alt="$SiteConfig.Title.XML" style="max-width:220px; height:auto;">
@@ -31,7 +31,7 @@
                                 $Footer
                             <% else %>
                                 <p style="margin:0 0 8px;">$SiteConfig.Title.XML</p>
-                                <p style="margin:0;">You can log in here: <a href="$LoginURL" style="color:#006892;">Login</a></p>
+                                <p style="margin:0;">You can log in here: <a href="$LoginURL" style="color:#000;">Login</a></p>
                             <% end_if %>
                         </td>
                     </tr>

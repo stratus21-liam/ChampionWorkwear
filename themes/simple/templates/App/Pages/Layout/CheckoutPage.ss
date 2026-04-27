@@ -74,8 +74,8 @@
                         <table>
                             <tbody>
                                 <tr class="subtotal">
-                                    <td>Total</td>
-                                    <td class="price">$SubmittedOrder.Total.Nice</td>
+                                    <td>Total inc VAT</td>
+                                    <td class="price">$SubmittedOrder.TotalIncludingVAT.Nice</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -307,8 +307,8 @@
                                     <td class="price">On account</td>
                                 </tr>
                                 <tr class="total">
-                                    <td>Total</td>
-                                    <td class="price">$CartTotal.Nice</td>
+                                    <td>Total inc VAT</td>
+                                    <td class="price">$CartTotalIncludingVAT.Nice</td>
                                 </tr>
                             </tbody>
                         </table>

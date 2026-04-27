@@ -149,8 +149,8 @@ html::-webkit-scrollbar-thumb {
     line-height: 36px;
     width: auto;
 }
-.product-num .square-radio label{
-    padding: 3px;
+.product-num .square-radio label.btn{
+    padding: 3px 10px;
 }
 
 .colour-radio label{

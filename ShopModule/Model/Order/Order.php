@@ -12,6 +12,7 @@ use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\FieldType\DBCurrency;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
@@ -26,6 +27,7 @@ class Order extends DataObject
     public const STATUS_APPROVED = 'Approved';
     public const STATUS_REJECTED = 'Rejected';
     public const STATUS_CANCELLED = 'Cancelled';
+    private const VAT_RATE = 0.20;
 
     private static $table_name = 'ShopOrder';
 
@@ -117,7 +119,7 @@ class Order extends DataObject
 
         if ($this->isInDB()) {
             $this->Subtotal = $this->getItemsSubtotal();
-            $this->Total = $this->Subtotal;
+            $this->Total = self::amountIncludingVAT((float) $this->Subtotal);
         }
     }
 
@@ -236,6 +238,19 @@ class Order extends DataObject
         }
 
         return $qty;
+    }
+
+    public function getTotalIncludingVAT(): DBCurrency
+    {
+        return DBCurrency::create_field(
+            'Currency',
+            (float) $this->Total
+        );
+    }
+
+    public static function amountIncludingVAT(float $amount): float
+    {
+        return $amount * (1 + self::VAT_RATE);
     }
 
     public function getFulfilmentMethodNice(): string

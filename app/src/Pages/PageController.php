@@ -19,6 +19,7 @@ namespace {
     {
         private const CART_SESSION_KEY = 'Shop.Cart';
         private const CART_MESSAGE_SESSION_KEY = 'Shop.CartMessage';
+        private const VAT_RATE = 0.20;
 
         private static $allowed_actions = [
             'addToCart',
@@ -350,6 +351,14 @@ namespace {
             }
 
             return DBCurrency::create_field('Currency', $total);
+        }
+
+        public function CartTotalIncludingVAT(): DBCurrency
+        {
+            return DBCurrency::create_field(
+                'Currency',
+                (float) $this->CartTotal()->getValue() * (1 + self::VAT_RATE)
+            );
         }
 
         public function CartMessage(): ?string

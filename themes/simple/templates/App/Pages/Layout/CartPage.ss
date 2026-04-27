@@ -106,10 +106,10 @@
                         <tbody>
                             <tr class="total">
                                 <td>
-                                    <h6 class="mb-0">Total</h6>
+                                    <h6 class="mb-0">Total inc VAT</h6>
                                 </td>
                                 <td class="price">
-                                    $CartTotal.Nice
+                                    $CartTotalIncludingVAT.Nice
                                 </td>
                             </tr>
                         </tbody>

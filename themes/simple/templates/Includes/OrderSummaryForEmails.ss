@@ -146,7 +146,7 @@
             <% end_loop %>
             <tr>
                 <td colspan="4" align="right"><strong>Total</strong></td>
-                <td><strong>$Order.Total.Nice</strong></td>
+                <td><strong>$Order.Total.Nice (Inc VAT)</strong></td>
             </tr>
         </tbody>
     </table>
