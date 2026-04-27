@@ -9,4 +9,4 @@ SilverStripe\Core\Injector\Injector:
 
 SilverStripe\Control\Email\Email:
   admin_email:
-    noreply@championworkwear.co.uk : 'Champion Team'  
+    sales@championworkwear.co.uk : 'Champion Team'  
