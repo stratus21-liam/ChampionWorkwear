@@ -1,7 +1,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin-top:20px;">
     <tr>
         <td colspan="2" style="padding:0 0 12px;">
-            <h3 style="margin:0; font-size:20px; color:#006892;">Order summary</h3>
+            <h3 style="margin:0; font-size:20px; color:#000;">Order summary</h3>
         </td>
     </tr>
     <tr>
@@ -42,7 +42,7 @@
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin-top:20px;">
         <tr>
             <td colspan="2" style="padding:0 0 12px;">
-                <h3 style="margin:0; font-size:20px; color:#006892;">Customer details</h3>
+                <h3 style="margin:0; font-size:20px; color:#000;">Customer details</h3>
             </td>
         </tr>
         <tr>
@@ -72,7 +72,7 @@
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin-top:20px;">
         <tr>
             <td colspan="2" style="padding:0 0 12px;">
-                <h3 style="margin:0; font-size:20px; color:#006892;">Delivery details</h3>
+                <h3 style="margin:0; font-size:20px; color:#000;">Delivery details</h3>
             </td>
         </tr>
         <tr>
@@ -106,7 +106,7 @@
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin-top:20px;">
         <tr>
             <td colspan="2" style="padding:0 0 12px;">
-                <h3 style="margin:0; font-size:20px; color:#006892;">Collection</h3>
+                <h3 style="margin:0; font-size:20px; color:#000;">Collection</h3>
             </td>
         </tr>
         <tr>
@@ -133,7 +133,7 @@
                 <tr>
                     <td style="vertical-align:top;">
                         <strong>$ProductTitle.XML</strong>
-                        <% if $ShowItemOptions && $OptionsNice %>
+                        <% if $Up.ShowItemOptions && $OptionsNice %>
                             <br>
                             <small>$OptionsNice.XML</small>
                         <% end_if %>

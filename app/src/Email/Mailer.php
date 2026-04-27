@@ -63,6 +63,13 @@ class Mailer
                 'Order' => $order,
                 'Items' => $order->Items(),
                 'Customer' => $member,
+                'OrderSummaryHTML' => self::renderOrderSummary(
+                    $order,
+                    $member,
+                    false,
+                    true,
+                    true
+                ),
             ]
         );
     }
@@ -95,6 +102,13 @@ class Mailer
                     'Items' => $order->Items(),
                     'Customer' => $customer,
                     'Recipient' => $recipient,
+                    'OrderSummaryHTML' => self::renderOrderSummary(
+                        $order,
+                        $customer && $customer->exists() ? $customer : null,
+                        true,
+                        true,
+                        true
+                    ),
                 ],
                 $customer && $customer->Email ? $customer->Email : null
             );
@@ -127,6 +141,13 @@ class Mailer
                     'Items' => $order->Items(),
                     'Customer' => $order->Customer(),
                     'Admin' => $admin,
+                    'OrderSummaryHTML' => self::renderOrderSummary(
+                        $order,
+                        $order->Customer()->exists() ? $order->Customer() : null,
+                        false,
+                        true,
+                        true
+                    ),
                 ]
             );
         }
@@ -152,6 +173,13 @@ class Mailer
                 'Order' => $order,
                 'Items' => $order->Items(),
                 'Customer' => $member,
+                'OrderSummaryHTML' => self::renderOrderSummary(
+                    $order,
+                    $member,
+                    false,
+                    true,
+                    true
+                ),
             ]
         );
     }
@@ -176,6 +204,13 @@ class Mailer
                 'Order' => $order,
                 'Items' => $order->Items(),
                 'Customer' => $member,
+                'OrderSummaryHTML' => self::renderOrderSummary(
+                    $order,
+                    $member,
+                    false,
+                    true,
+                    true
+                ),
             ]
         );
     }
@@ -189,6 +224,26 @@ class Mailer
         return Member::get()->filter([
             'CustomerAccountID' => $order->CustomerAccountID,
             'IsAdmin' => 1,
+        ]);
+    }
+
+    protected static function renderOrderSummary(
+        Order $order,
+        ?Member $customer,
+        bool $showCustomerDetails,
+        bool $showDeliveryDetails,
+        bool $showItemOptions
+    ): string {
+        return ArrayData::create([
+            'Order' => $order,
+            'Items' => $order->Items(),
+            'Customer' => $customer,
+            'ShowCustomerDetails' => $showCustomerDetails,
+            'ShowDeliveryDetails' => $showDeliveryDetails,
+            'ShowItemOptions' => $showItemOptions,
+        ])->renderWith([
+            'Includes\OrderSummaryForEmails',
+            'OrderSummaryForEmails',
         ]);
     }
 }

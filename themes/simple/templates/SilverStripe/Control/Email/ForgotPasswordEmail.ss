@@ -47,7 +47,7 @@
     </p>
 
     <p style="word-break:break-word;">
-        <a href="$PasswordResetLink" style="color:#006892;">
+        <a href="$PasswordResetLink" style="color:#000;">
             $PasswordResetLink
         </a>
     </p>
