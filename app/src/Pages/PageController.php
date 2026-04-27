@@ -98,7 +98,9 @@ namespace {
                     if (!$attribute->Required) {
                         continue;
                     }
-
+                    if($attribute->Type != 'text_input'){
+                        continue;
+                    }
                     $attributeKey = 'attr_' . $attribute->ID;
                     $attributeData = $attributes[$attributeKey] ?? null;
                     $attributeValue = is_array($attributeData) ? ($attributeData['value'] ?? '') : '';
