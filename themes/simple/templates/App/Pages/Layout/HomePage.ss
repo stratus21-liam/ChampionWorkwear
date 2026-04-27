@@ -19,7 +19,7 @@
             <div class="col m-md-b15 m-sm-b0 m-b30 product-pagination-item">
                <div class="shop-card">
                   <div class="dz-media">
-                     <img src="$FeaturedImage.URL" alt="image" style="max-height: 280px;object-fit: contain;">			
+                     <img src="$FeaturedImage.URL" alt="image" style="max-height: 225px;object-fit: contain;">			
                      <div class="shop-meta">
                         <% if Active %>
                            <form method="post" action="$Top.Link(addToCart)" class="d-inline">
