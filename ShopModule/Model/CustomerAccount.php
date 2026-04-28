@@ -10,6 +10,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Security\Security;
+use SilverStripe\SiteConfig\SiteConfig;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class CustomerAccount extends DataObject
@@ -73,7 +74,12 @@ class CustomerAccount extends DataObject
             );
             $fields->addFieldToTab('Root.Roles', $rolesGrid);
 
-            $productsConfig = GridFieldConfig_RecordEditor::create();
+            $productCMSPagination = (int) SiteConfig::current_site_config()->ProductCMSPagination;
+            if ($productCMSPagination <= 0) {
+                $productCMSPagination = 12;
+            }
+
+            $productsConfig = GridFieldConfig_RecordEditor::create($productCMSPagination);
             $productsConfig->addComponent(new GridFieldOrderableRows('Sort'));
             $productsConfig->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
 
