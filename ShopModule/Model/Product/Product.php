@@ -33,8 +33,11 @@ class Product extends DataObject
         'Description' => 'HTMLText',
         'SKU' => 'Varchar(100)',
         'Price' => 'Currency',
-        'Active' => 'Boolean'
+        'Active' => 'Boolean',
+        "Sort"     => "Int",
     ];
+
+    private static $default_sort = "Sort";
 
     private static $summary_fields = [
         'Title' => 'Title',
@@ -42,7 +45,8 @@ class Product extends DataObject
         'Price.Nice' => 'Price',
         'RolesList' => 'Roles',
         'AttributesList' => 'Attributes',
-        'Active.Nice' => 'Active'
+        'Active.Nice' => 'Active',
+        'Sort' => 'Sort Order',
     ];
 
     private static $searchable_fields = [
@@ -77,8 +81,6 @@ class Product extends DataObject
         'FeaturedImage'
     ];
 
-    private static $default_sort = 'Title ASC';
-
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -87,6 +89,7 @@ class Product extends DataObject
             'Roles',
             'Images',
             'Attributes',
+            'Sort',
             'AttributeOptions'
         ]);
 

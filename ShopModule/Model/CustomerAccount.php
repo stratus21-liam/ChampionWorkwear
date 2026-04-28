@@ -10,6 +10,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Security\Security;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class CustomerAccount extends DataObject
 {
@@ -73,6 +74,7 @@ class CustomerAccount extends DataObject
             $fields->addFieldToTab('Root.Roles', $rolesGrid);
 
             $productsConfig = GridFieldConfig_RecordEditor::create();
+            $productsConfig->addComponent(new GridFieldOrderableRows('Sort'));
             $productsConfig->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
 
             $productsGrid = GridField::create(
@@ -120,7 +122,7 @@ class CustomerAccount extends DataObject
             return Product::get()->filter([
                 'CustomerAccountID' => $member->CustomerAccountID,
                 'Active' => 1
-            ])->sort('Title');
+            ])->sort('Sort');
         }
 
         if (!$member->RoleID) {
@@ -132,7 +134,7 @@ class CustomerAccount extends DataObject
                 'Active' => 1,
                 'Roles.ID' => $member->RoleID,
             ])
-            ->sort('Title');
+            ->sort('Sort');
     }
 
     public function validate()
