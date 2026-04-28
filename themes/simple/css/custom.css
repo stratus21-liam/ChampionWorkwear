@@ -194,3 +194,9 @@ html::-webkit-scrollbar-thumb {
     color: #fff;
     opacity: 0.8;
 }
+
+/* category tabs */
+#product-category-tabs label{
+    width: auto;
+    padding: 10px;
+}

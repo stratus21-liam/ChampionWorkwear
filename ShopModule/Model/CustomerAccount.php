@@ -6,11 +6,14 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Security\Security;
 use SilverStripe\SiteConfig\SiteConfig;
+use Symbiote\GridFieldExtensions\GridFieldAddNewInlineButton;
+use Symbiote\GridFieldExtensions\GridFieldEditableColumns;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class CustomerAccount extends DataObject
@@ -39,7 +42,8 @@ class CustomerAccount extends DataObject
     private static $has_many = [
         'Roles' => Role::class,
         'Members' => \SilverStripe\Security\Member::class,
-        'Products' => Product::class
+        'Products' => Product::class,
+        'Categories' => ProductCategory::class,
     ];
 
     private static $default_sort = 'Title ASC';
@@ -52,6 +56,7 @@ class CustomerAccount extends DataObject
             'Members',
             'Roles',
             'Products',
+            'Categories',
         ]);
 
         $fields->addFieldToTab('Root.Main', CheckboxField::create('Active', 'Active'));
@@ -90,6 +95,29 @@ class CustomerAccount extends DataObject
                 $productsConfig
             );
             $fields->addFieldToTab('Root.Products', $productsGrid);
+
+            $categoriesConfig = GridFieldConfig_RecordEditor::create();
+            $categoriesConfig->addComponent(new GridFieldAddNewInlineButton());
+            $categoriesConfig->addComponent(new GridFieldEditableColumns());
+
+            $categoriesGrid = GridField::create(
+                'Categories',
+                'Categories',
+                $this->Categories(),
+                $categoriesConfig
+            );
+            $categoriesGrid->getConfig()->removeComponentsByType(GridFieldAddNewButton::class);
+            $categoriesGrid->getConfig()
+                ->getComponentByType(GridFieldEditableColumns::class)
+                ->setDisplayFields([
+                    'Title' => [
+                        'title' => 'Title',
+                        'callback' => function ($record, $column, $grid) {
+                            return TextField::create($column);
+                        }
+                    ],
+                ]);
+            $fields->addFieldToTab('Root.Categories', $categoriesGrid);
 
             $membersConfig = GridFieldConfig_RecordEditor::create();
             $membersConfig->removeComponentsByType(GridFieldAddExistingAutocompleter::class);

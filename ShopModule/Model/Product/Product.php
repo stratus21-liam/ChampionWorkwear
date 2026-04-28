@@ -43,6 +43,7 @@ class Product extends DataObject
         'Title' => 'Title',
         'SKU' => 'SKU',
         'Price.Nice' => 'Price',
+        'CategoriesList' => 'Categories',
         'RolesList' => 'Roles',
         'AttributesList' => 'Attributes',
         'Active.Nice' => 'Active',
@@ -65,6 +66,7 @@ class Product extends DataObject
 
     private static $many_many = [
         'Roles' => Role::class,
+        'Categories' => ProductCategory::class,
         'Images' => Image::class,
         'Attributes' => ProductAttribute::class,
         'AttributeOptions' => ProductAttributeOption::class,
@@ -87,6 +89,7 @@ class Product extends DataObject
 
         $fields->removeByName([
             'Roles',
+            'Categories',
             'Images',
             'Attributes',
             'Sort',
@@ -127,6 +130,30 @@ class Product extends DataObject
                     $this->CustomerAccountID
                         ? 'Only roles for this customer account are shown.'
                         : 'Save the product with a customer account first before assigning roles.'
+                )
+        );
+
+        $categorySource = ProductCategory::get()->filter('ID', 0);
+
+        if ($this->CustomerAccountID) {
+            $categorySource = ProductCategory::get()->filter('CustomerAccountID', $this->CustomerAccountID);
+        }
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            TagField::create(
+                'Categories',
+                'Categories',
+                $categorySource,
+                $this->Categories()
+            )
+                ->setTitleField('Title')
+                ->setShouldLazyLoad(false)
+                ->setCanCreate(false)
+                ->setDescription(
+                    $this->CustomerAccountID
+                        ? 'Only categories for this customer account are shown.'
+                        : 'Save the product with a customer account first before assigning categories.'
                 )
         );
 
@@ -198,6 +225,13 @@ class Product extends DataObject
     public function getRolesList()
     {
         $titles = $this->Roles()->column('Title');
+
+        return $titles ? implode(', ', $titles) : '';
+    }
+
+    public function getCategoriesList()
+    {
+        $titles = $this->Categories()->column('Title');
 
         return $titles ? implode(', ', $titles) : '';
     }
@@ -274,6 +308,12 @@ class Product extends DataObject
         }
 
         $selectedAttributeIds = $this->Attributes()->column('ID');
+
+        foreach ($this->Categories() as $category) {
+            if ($category->CustomerAccountID != $this->CustomerAccountID) {
+                $this->Categories()->remove($category);
+            }
+        }
 
         foreach ($this->AttributeOptions() as $option) {
             $remove = false;

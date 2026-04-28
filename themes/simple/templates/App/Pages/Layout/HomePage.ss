@@ -12,37 +12,36 @@
 </div>
 
 <% with CurrentMember.CustomerAccount %>
+
 <section class="content-inner-1 z-index-unset">
+
+   <% if Categories %>
+      <div class="container pb-4">
+         <div class="d-flex align-items-center justify-content-between m-b30">
+            <h6 class="title mb-0 fw-normal">
+               <svg class="me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" width="20" height="20"><g id="Layer_30" data-name="Layer 30"><path d="M2.54,5H15v.5A1.5,1.5,0,0,0,16.5,7h2A1.5,1.5,0,0,0,20,5.5V5h2.33a.5.5,0,0,0,0-1H20V3.5A1.5,1.5,0,0,0,18.5,2h-2A1.5,1.5,0,0,0,15,3.5V4H2.54a.5.5,0,0,0,0,1ZM16,3.5a.5.5,0,0,1,.5-.5h2a.5.5,0,0,1,.5.5v2a.5.5,0,0,1-.5.5h-2a.5.5,0,0,1-.5-.5Z"></path><path d="M22.4,20H18v-.5A1.5,1.5,0,0,0,16.5,18h-2A1.5,1.5,0,0,0,13,19.5V20H2.55a.5.5,0,0,0,0,1H13v.5A1.5,1.5,0,0,0,14.5,23h2A1.5,1.5,0,0,0,18,21.5V21h4.4a.5.5,0,0,0,0-1ZM17,21.5a.5.5,0,0,1-.5.5h-2a.5.5,0,0,1-.5-.5v-2a.5.5,0,0,1,.5-.5h2a.5.5,0,0,1,.5.5Z"></path><path d="M8.5,15h2A1.5,1.5,0,0,0,12,13.5V13H22.45a.5.5,0,1,0,0-1H12v-.5A1.5,1.5,0,0,0,10.5,10h-2A1.5,1.5,0,0,0,7,11.5V12H2.6a.5.5,0,1,0,0,1H7v.5A1.5,1.5,0,0,0,8.5,15ZM8,11.5a.5.5,0,0,1,.5-.5h2a.5.5,0,0,1,.5.5v2a.5.5,0,0,1-.5.5h-2a.5.5,0,0,1-.5-.5Z"></path></g></svg>
+               Category Filter
+            </h6>
+         </div>      
+         <div class="btn-group product-size" id="product-category-tabs">
+            <input type="radio" class="btn-check" name="product-category-filter" id="product-category-filter-all" data-category-filter="all" checked>
+            <label class="btn" for="product-category-filter-all">All</label>
+
+            <% loop Categories %>
+               <input type="radio" class="btn-check" name="product-category-filter" id="product-category-filter-$ID" data-category-filter="$ID">
+               <label class="btn" for="product-category-filter-$ID">$Title</label>
+            <% end_loop %>
+         </div>
+      </div>
+   <% end_if %>
+
    <div class="container">
       <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 m-auto gx-xl-4 g-3 mb-xl-0 mb-md-0 mb-3" id="product-grid">
          <% loop VisibleProducts %>
-            <div class="col m-md-b15 m-sm-b0 m-b30 product-pagination-item">
+            <div class="col m-md-b15 m-sm-b0 m-b30 product-pagination-item" data-category-ids="<% loop Categories %>$ID <% end_loop %>">
                <div class="shop-card">
                   <a href="$Link" class="dz-media">
                      <img src="$FeaturedImage.URL" alt="image" style="max-height: 210px;object-fit: contain;">			
-                     <%-- <div class="shop-meta">
-                        <% if Active %>
-                           <form method="post" action="$Top.Link(addToCart)" class="d-inline">
-                              <input type="hidden" name="ProductID" value="$ID">
-                              <input type="hidden" name="Quantity" value="1">
-
-                              <button type="submit" class="btn btn-primary meta-icon dz-carticon">
-                                 <svg class="dz-cart-check" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.9144 3.73438L5.49772 10.151L2.58105 7.23438" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                 </svg>
-
-                                 <svg class="dz-cart-out" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.6033 10.4092C9.70413 10.4083 8.97452 11.1365 8.97363 12.0357C8.97274 12.9348 9.70097 13.6644 10.6001 13.6653C11.4993 13.6662 12.2289 12.938 12.2298 12.0388C12.2298 12.0383 12.2298 12.0378 12.2298 12.0373C12.2289 11.1391 11.5014 10.4109 10.6033 10.4092Z" fill="white"/>
-                                    <path d="M13.4912 2.6132C13.4523 2.60565 13.4127 2.60182 13.373 2.60176H3.46022L3.30322 1.55144C3.20541 0.853911 2.60876 0.334931 1.90439 0.334717H0.627988C0.281154 0.334717 0 0.61587 0 0.962705C0 1.30954 0.281154 1.59069 0.627988 1.59069H1.90595C1.9858 1.59011 2.05338 1.64957 2.06295 1.72886L3.03004 8.35727C3.16263 9.19953 3.88712 9.8209 4.73975 9.82363H11.2724C12.0933 9.8247 12.8015 9.24777 12.9664 8.44362L13.9884 3.34906C14.0543 3.00854 13.8317 2.67909 13.4912 2.6132Z" fill="white"/>
-                                    <path d="M6.61539 11.9676C6.57716 11.0948 5.85687 10.4077 4.98324 10.4108C4.08483 10.4471 3.38595 11.2048 3.42225 12.1032C3.45708 12.9653 4.15833 13.6505 5.02092 13.6653H5.06017C5.95846 13.626 6.65474 12.8658 6.61539 11.9676Z" fill="white"/>
-                                    <clipPath id="clip0_502_36">
-                                       <rect width="14" height="14" fill="white"/>
-                                    </clipPath>
-                                 </svg>
-                              </button>
-                           </form>
-                        <% end_if %>
-                     </div>	 --%>
                   </a>
 
                   <div class="dz-content">
@@ -88,20 +87,22 @@
       document.addEventListener('DOMContentLoaded', function () {
          var itemsPerClick = 15;
          var items = document.querySelectorAll('#product-grid .product-pagination-item');
-         var totalItems = items.length;
+         var filteredItems = Array.prototype.slice.call(items);
+         var totalItems = filteredItems.length;
          var visibleItems = 0;
 
+         var tabs = document.querySelectorAll('#product-category-tabs input[data-category-filter]');
          var status = document.getElementById('product-pagination-status');
          var loadMoreWrap = document.getElementById('load-more-products-wrap');
          var loadMoreButton = document.getElementById('load-more-products');
 
          function updateStatus() {
             if (status) {
-                  status.textContent = 'Showing ' + visibleItems + ' of ' + totalItems + ' Results';
+               status.textContent = 'Showing ' + visibleItems + ' of ' + totalItems + ' Results';
             }
 
             if (loadMoreWrap) {
-                  loadMoreWrap.style.display = visibleItems >= totalItems ? 'none' : '';
+               loadMoreWrap.style.display = visibleItems >= totalItems ? 'none' : '';
             }
          }
 
@@ -109,23 +110,50 @@
             var nextVisibleCount = visibleItems + itemsPerClick;
 
             for (var i = visibleItems; i < nextVisibleCount && i < totalItems; i++) {
-                  items[i].style.display = '';
+               filteredItems[i].style.display = '';
             }
 
             visibleItems = Math.min(nextVisibleCount, totalItems);
             updateStatus();
          }
 
-         for (var i = 0; i < totalItems; i++) {
+         function itemHasCategory(item, categoryId) {
+            var categoryIds = (item.getAttribute('data-category-ids') || '').trim().split(/\s+/);
+
+            return categoryIds.indexOf(categoryId) !== -1;
+         }
+
+         function applyCategoryFilter(categoryId) {
+            filteredItems = Array.prototype.filter.call(items, function (item) {
+               return categoryId === 'all' || itemHasCategory(item, categoryId);
+            });
+
+            totalItems = filteredItems.length;
+            visibleItems = 0;
+
+            for (var i = 0; i < items.length; i++) {
+               items[i].style.display = 'none';
+            }
+
+            showMoreItems();
+         }
+
+         for (var i = 0; i < items.length; i++) {
             items[i].style.display = 'none';
          }
 
          showMoreItems();
 
+         for (var j = 0; j < tabs.length; j++) {
+            tabs[j].addEventListener('change', function () {
+               applyCategoryFilter(this.getAttribute('data-category-filter'));
+            });
+         }
+
          if (loadMoreButton) {
             loadMoreButton.addEventListener('click', function (e) {
-                  e.preventDefault();
-                  showMoreItems();
+               e.preventDefault();
+               showMoreItems();
             });
          }
       });
