@@ -183,3 +183,8 @@ html::-webkit-scrollbar-thumb {
     z-index: 2;
     color: #fff; 
 } */
+
+.pagination.style-1 li .page-link {
+    background: #24262b;
+    color: #fff;
+}
