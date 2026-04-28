@@ -86,7 +86,7 @@
 
    <script>
       document.addEventListener('DOMContentLoaded', function () {
-         var itemsPerClick = 12;
+         var itemsPerClick = 15;
          var items = document.querySelectorAll('#product-grid .product-pagination-item');
          var totalItems = items.length;
          var visibleItems = 0;
