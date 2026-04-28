@@ -99,6 +99,7 @@ class CustomerAccount extends DataObject
             $categoriesConfig = GridFieldConfig_RecordEditor::create();
             $categoriesConfig->addComponent(new GridFieldAddNewInlineButton());
             $categoriesConfig->addComponent(new GridFieldEditableColumns());
+            $categoriesConfig->addComponent(new GridFieldOrderableRows('SortOrder'));
 
             $categoriesGrid = GridField::create(
                 'Categories',

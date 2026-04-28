@@ -16,6 +16,7 @@ class ProductCategory extends DataObject
 
     private static $db = [
         'Title' => 'Varchar(255)',
+        'SortOrder' => 'Int',
     ];
 
     private static $has_one = [
@@ -28,13 +29,14 @@ class ProductCategory extends DataObject
 
     private static $summary_fields = [
         'Title' => 'Title',
+        'SortOrder' => 'Sort Order',
     ];
 
     private static $searchable_fields = [
         'Title',
     ];
 
-    private static $default_sort = 'Title ASC';
+    private static $default_sort = 'SortOrder ASC, Title ASC';
 
     public function getCMSFields()
     {
@@ -43,6 +45,7 @@ class ProductCategory extends DataObject
         $fields->removeByName([
             'CustomerAccountID',
             'Products',
+            'SortOrder',
         ]);
 
         if ($this->CustomerAccountID && $this->CustomerAccount()->exists()) {
