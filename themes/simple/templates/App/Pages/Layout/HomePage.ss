@@ -28,7 +28,7 @@
             <label class="btn" for="product-category-filter-all">All</label>
 
             <% loop Categories %>
-               <input type="radio" class="btn-check" name="product-category-filter" id="product-category-filter-$ID" data-category-filter="$ID">
+               <input type="radio" class="btn-check" name="product-category-filter" id="product-category-filter-$ID" data-category-filter="$ID" data-category-title="$Title.ATT">
                <label class="btn" for="product-category-filter-$ID">$Title</label>
             <% end_loop %>
          </div>
@@ -38,7 +38,7 @@
    <div class="container">
       <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 m-auto gx-xl-4 g-3 mb-xl-0 mb-md-0 mb-3" id="product-grid">
          <% loop VisibleProducts %>
-            <div class="col m-md-b15 m-sm-b0 m-b30 product-pagination-item" data-category-ids="<% loop Categories %>$ID <% end_loop %>">
+            <div class="col m-md-b15 m-sm-b0 m-b30 product-pagination-item" data-category-ids="<% loop Categories %>$ID <% end_loop %>" data-category-titles="<% loop Categories %>$Title.ATT|<% end_loop %>">
                <div class="shop-card">
                   <a href="$Link" class="dz-media">
                      <img src="$FeaturedImage.URL" alt="image" style="max-height: 210px;object-fit: contain;">			
@@ -117,15 +117,27 @@
             updateStatus();
          }
 
-         function itemHasCategory(item, categoryId) {
-            var categoryIds = (item.getAttribute('data-category-ids') || '').trim().split(/\s+/);
-
-            return categoryIds.indexOf(categoryId) !== -1;
+         function normalizeCategoryTitle(title) {
+            return (title || '').toLowerCase().replace(/&amp;/g, '&').trim();
          }
 
-         function applyCategoryFilter(categoryId) {
+         function itemHasCategory(item, categoryId, categoryTitle) {
+            var categoryIds = (item.getAttribute('data-category-ids') || '').trim().split(/\s+/);
+            var categoryTitles = (item.getAttribute('data-category-titles') || '')
+               .split('|')
+               .map(normalizeCategoryTitle)
+               .filter(Boolean);
+
+            return categoryIds.indexOf(categoryId) !== -1 ||
+               (
+                  categoryTitle &&
+                  categoryTitles.indexOf(normalizeCategoryTitle(categoryTitle)) !== -1
+               );
+         }
+
+         function applyCategoryFilter(categoryId, categoryTitle) {
             filteredItems = Array.prototype.filter.call(items, function (item) {
-               return categoryId === 'all' || itemHasCategory(item, categoryId);
+               return categoryId === 'all' || itemHasCategory(item, categoryId, categoryTitle);
             });
 
             totalItems = filteredItems.length;
@@ -146,7 +158,10 @@
 
          for (var j = 0; j < tabs.length; j++) {
             tabs[j].addEventListener('change', function () {
-               applyCategoryFilter(this.getAttribute('data-category-filter'));
+               applyCategoryFilter(
+                  this.getAttribute('data-category-filter'),
+                  this.getAttribute('data-category-title')
+               );
             });
          }
 
