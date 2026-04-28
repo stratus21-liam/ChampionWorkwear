@@ -188,3 +188,9 @@ html::-webkit-scrollbar-thumb {
     background: #24262b;
     color: #fff;
 }
+.pagination.style-1 li .prev:hover, .pagination.style-1 li .next:hover {
+    background-color: #24262b;
+    box-shadow: none;
+    color: #fff;
+    opacity: 0.8;
+}
